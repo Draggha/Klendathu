@@ -1,16 +1,12 @@
-var
-    // libs
-    vertx = require('vertx'),
-    console = require('vertx/console'),
-    // vars
+var vertx = require('vertx'),
+    eb = vertx.eventBus,
     port = 8080,
     sockPort = 1337,
     httpServer = vertx.createHttpServer(),
     sockHttpServer = vertx.createHttpServer(),
-    sockJSSserver = vertx.createSockJSServer(sockHttpServer),
-    sockJSConfig = { prefix: '/holla' };
+    sockJSSserver = vertx.createSockJSServer(sockHttpServer);
 
-httpServer.requestHandler(function(req) {
+httpServer.requestHandler(function (req) {
     var file = '';
     if (req.path() == '/') {
         file = 'index.html';
@@ -22,15 +18,35 @@ httpServer.requestHandler(function(req) {
 
 httpServer.listen(port, "localhost");
 
-sockJSSserver.installApp(sockJSConfig,  function (sock) {
-    new vertx.Pump(sock, sock).start();
+sockJSSserver.bridge({
+    prefix: '/eventbus'
+}, [{
+    adress: 'test'
+}], [{
+    adress: 'test'
+}]);
+
+eb.registerHandler('test.get', function (message) {
+    eb.send('test', {
+        project: 'Klendathu',
+        cards: [
+            {
+                id: 1,
+                title: "Card 1",
+                text: "Lorem ipsum dolor sit amet..."
+            },
+            {
+                id: 2,
+                title: "Card 2",
+                text: "Let me test something."
+            },
+            {
+                id: 3,
+                title: "Card 3",
+                text: "Now it's getting interesting..."
+            }
+        ]
+    });
 });
 
 sockHttpServer.listen(sockPort, "localhost");
-
-/*
-vertx.eventBus.registerHandler('ping-address', function(message, replier) {
-    replier('pong!');
-    console.log('Sent back pong JavaScript!')
-});
-*/

@@ -1,53 +1,28 @@
-// TEST
-var stubs = {
-    cards: [
-        {
-            title: "Card 1",
-            text: "Lorem ipsum dolor sit amet..."
-        },
-        {
-            title: "Card 2",
-            text: "Let me test something."
-        },
-        {
-            title: "Card 3",
-            text: "Now it's getting interesting..."
-        }
-    ]
-};
-
 // layout
-var layout = new Thorax.LayoutView();
-layout.appendTo('.content');
+//var layout = new Thorax.LayoutView();
+//layout.appendTo('.content');
 
 // views
-var CardView = new Thorax.View({
-  template: Thorax.templates.card
-});
+//var CardView = new Thorax.View({
+//    template: Thorax.templates.card
+//});
 
-// Impl
-var sock = new SockJS('http://localhost:1337/holla');
+//    CardView.collection = new Thorax.Collection(JSON.parse(e.data));
+//    layout.setView(CardView);
 
-sock.onopen = function () {
-    console.log('open'); // DEBUG
-};
+var eb = new vertx.EventBus('http://localhost:1337/eventbus');
 
-sock.onmessage = function (e) {
-    console.log('message', e.data); // DEBUG
+eb.onopen = function () {
+    eb.registerHandler('test', function (message) {
+        console.log('Project: ' + message.project);
+        message.cards.forEach(function (card) {
+            console.log('\tId: ' + card.id);
+            console.log('\tTitle: ' + card.title);
+            console.log('\tText: ' + card.text);
+        });
+    });
 
-    // TEST
-    /*var str = '',
-        messageJson = JSON.parse(e.data),
-        iCounter = messageJson.length;
-    while (iCounter--) {
-        str += '<div class="card"><h2>' + messageJson[iCounter].title + '</h2>' + '<p>' + messageJson[iCounter].text + '</p></div>';
-    }
-    $('.content').html(str);*/
-
-    CardView.collection = new Thorax.Collection(JSON.parse(e.data));
-    layout.setView(CardView);
-};
-
-sock.onclose = function () {
-    console.log('close'); // DEBUG
+    $('.card-generator_button').on('click', function (e) {
+        eb.send('test.get', true);
+    });
 };
