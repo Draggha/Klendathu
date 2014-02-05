@@ -1,0 +1,42 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Home</title>
+        <link type="text/css"rel="stylesheet"  href="css/style.css">
+        <script type="application/javascript" src="js/vendor/thorax/thorax-mobile.min.js"></script>
+        <script type="application/javascript" src="js/vendor/sockjs/sockjs-0.3.4.min.js"></script>
+        <script src="js/main.js"></script>
+    </head>
+    <body>
+        <div class="main-wrapper">
+            <h1>Home</h1>
+            <input type="button" value="generate cards" class="card-generator_button">
+            <section class="content"></section>
+        </div>
+        
+        <script type="text/template" data-template-name="card">
+            {{#collection tag="div"}}
+            <div class="card">
+                <h2>{{title}}</h2>
+                <p>{{text}}</p>
+            </div>
+            {{/collection}}
+        </script>
+    
+    <script>
+        // Grab the text from the templates we created above
+        Thorax.templates = {
+            card: Handlebars.compile($('script[data-template-name="card"]').html())
+        };
+
+        // Initialize the app object
+        window.app = {};
+        
+        // Test stuff
+        $('.card-generator_button').on('click', function (e) {
+            sock.send(JSON.stringify(stubs.cards));
+        });
+    </script>
+    </body>
+</html>

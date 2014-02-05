@@ -1,0 +1,13 @@
+.main-wrapper {
+    margin: 2% 10% 2%;    
+}
+
+.content {
+    margin-top: 2%;
+}
+
+.card {
+    margin-top: 2%;
+    border: 2px solid black;
+    width: 100%;
+}
