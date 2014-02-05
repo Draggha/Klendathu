@@ -7,6 +7,6 @@
     "author": "Johann Haaf",
     "description":"A simple web app to document test cases.",
     "homepage": "https://github.com/Draggha/Klendathu",
-    "licenses": ["The Apache Software License Version 2.0"],
+    "licenses": ["The MIT License"],
     "keywords": ["qs documentation", "cards", "test cases"]
 }
