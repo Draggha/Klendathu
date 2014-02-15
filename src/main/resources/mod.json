@@ -1,8 +1,7 @@
 {
-    "main":"main.js",
-    "includes": "io.vertx~lang-dynjs~1.0.0-Beta1",
+    "main":"rest.js",
+    "includes": "com.jetdrone~yoke~1.0.4",
     "auto-redeploy": true,
-    "lang-impl": "io.vertx~lang-dynjs~1.0.0-Beta1:org.dynjs.vertx.DynJSVerticleFactory",
 
     "author": "Johann Haaf",
     "description":"A simple web app to document test cases.",

@@ -18,16 +18,30 @@ httpServer.requestHandler(function (req) {
 
 httpServer.listen(port, "localhost");
 
-sockJSSserver.bridge({
-    prefix: '/eventbus'
-}, [{
-    adress: 'test'
-}], [{
-    adress: 'test'
-}]);
+sockJSSserver.bridge(
+    {
+        prefix: '/eventbus'
+    },
+    [
+        {
+            adress: 'test'
+        },
+        {
+            adress: 'test.template'
+        }
+    ],
+    [
+        {
+            adress: 'test'
+        },
+        {
+            adress: 'test.template'
+        }
+    ]
+);
 
-eb.registerHandler('test.get', function (message) {
-    eb.send('test', {
+eb.registerHandler('test.get', function (message, replier) {
+    replier({
         project: 'Klendathu',
         cards: [
             {
@@ -46,6 +60,14 @@ eb.registerHandler('test.get', function (message) {
                 text: "Now it's getting interesting..."
             }
         ]
+    });
+});
+
+eb.registerHandler('templates.card.get', function (message, replier) {
+    vertx.fileSystem.readFile('src/templates/cards.hbs', function(err, res) {
+        if (!err) {
+            replier(res.getString(0, res.length()));
+        }
     });
 });
 
