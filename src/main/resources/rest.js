@@ -1,41 +1,34 @@
-var Yoke = require('yoke/Yoke');
-var Router = require('yoke/middleware/Router');
-var ResponseTime = require('yoke/middleware/ResponseTime');
-//var MicroTemplateEngine = require('yoke/engine/MicroTemplateEngine');
+/*global require*/
+function startServer() {
+    "use strict";
 
-var yoke = new Yoke();
-var router = new Router();
-yoke.use(new ResponseTime());
-yoke.use(router);
-router.get('/hello', function (req) {
-    req.response.sendFile('web/index.html');
-});
-// all other resources are forbidden
-yoke.use(function (req, next) {
-    next(404);
-});
+    // libs
+    var Yoke = require('yoke/Yoke'),
+        Router = require('yoke/middleware/Router'),
+        ResponseTime = require('yoke/middleware/ResponseTime'),
+        //var MicroTemplateEngine = require('yoke/engine/MicroTemplateEngine');
 
-// engines
-//yoke.engine('html', new MicroTemplateEngine());
-
-// start server
-yoke.listen(8080);
+        // local vars
+        yoke = new Yoke(),
+        router = new Router();
 
 
-/*var container = require('vertx/container');
+    yoke.use(new ResponseTime());
+    yoke.use(router);
+    router.get('/hello', function (req) {
+        req.response.sendFile('web/index.html');
+    });
+    // all other resources are forbidden
+    yoke.use(function (req, next) {
+        next(404);
+    });
 
-container.deployModule('com.jetdrone~yoke~1.0.3');
+    // engines
+    //yoke.engine('html', new MicroTemplateEngine());
 
-var Yoke = require('Yoke');
+    // start server
+    yoke.listen(8080);
+}
 
-var yoke = new Yoke();
-yoke.use(function (req) {
-    var file = '';
-    if (req.path() == '/') {
-        file = 'index.html';
-    } else if (req.path().indexOf('..') == -1) {
-        file = req.path();
-    }
-    req.response.sendFile('web/' + file, "web/404.html");
-});
-yoke.listen(8080);*/
+// Bootstrap the server
+startServer();
