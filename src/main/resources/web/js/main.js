@@ -1,22 +1,37 @@
-/*Klendathu.eb.onopen = function () {
-    eb.registerHandler('test.template', function (message) {
-        
-        console.log(view);
-    });
+window.Klendathu = Ember.Application.create();
 
-    $('.card-generator_button').on('click', function (e) {
-        eb.send('test.get', true, function (reply) {
-            console.log('Project: ' + reply.project);
-            reply.cards.forEach(function (card) {
-                console.log('\tId: ' + card.id);
-                console.log('\tTitle: ' + card.title);
-                console.log('\tText: ' + card.text);
-            });
-            
-        });
-    });
+Klendathu.Router.map(function () {
+    this.resource('cards');
+});
 
-    eb.send('templates.card.get', true, function (reply) {
-        
-    });
-};*/
+
+Klendathu.CardsRoute = Ember.Route.extend({
+    model: function () {
+        return this.store.find('card');
+    }
+});
+
+Klendathu.Card = DS.Model.extend({
+    title: DS.attr('string'),
+    text: DS.attr('string')
+});
+
+Klendathu.ApplicationAdapter = DS.FixtureAdapter.extend();
+
+Klendathu.Card.FIXTURES = [
+    {
+        id: 1,
+        title: "Card 1",
+        text: "Lorem ipsum dolor sit amet..."
+    },
+    {
+        id: 2,
+        title: "Card 2",
+        text: "Let me test something."
+    },
+    {
+        id: 3,
+        title: "Card 3",
+        text: "Now it's getting interesting..."
+    }
+];
