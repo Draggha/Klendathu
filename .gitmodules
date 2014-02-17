@@ -1,0 +1,3 @@
+[submodule "Klendathu-Frontend"]
+	path = Klendathu-Frontend
+	url = ../Klendathu-Frontend.git
